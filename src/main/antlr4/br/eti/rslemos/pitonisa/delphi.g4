@@ -1,0 +1,6 @@
+grammar delphi;
+
+goal
+	:
+	;
+
