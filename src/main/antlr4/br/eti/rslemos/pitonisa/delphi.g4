@@ -27,6 +27,35 @@ USES			: 'USES';
 CONST			: 'CONST';
 VAR				: 'VAR';
 ABSOLUTE		: 'ABSOLUTE';
+PROCEDURE		: 'PROCEDURE';
+FUNCTION		: 'FUNCTION';
+OUT				: 'OUT';
+ARRAY			: 'ARRAY';
+OF				: 'OF';
+FILE			: 'FILE';
+REAL48			: 'REAL48';
+REAL			: 'REAL';
+SINGLE			: 'SINGLE';
+DOUBLE			: 'DOUBLE';
+EXTENDED		: 'EXTENDED';
+CURRENCY		: 'CURRENCY';
+COMP			: 'COMP';
+SHORTINT		: 'SHORTINT';
+SMALLINT		: 'SMALLINT';
+INTEGER			: 'INTEGER';
+BYTE			: 'BYTE';
+LONGINT			: 'LONGINT';
+INT64			: 'INT64';
+WORD			: 'WORD';
+BOOLEAN			: 'BOOLEAN';
+CHAR			: 'CHAR';
+WIDECHAR		: 'WIDECHAR';
+LONGWORD		: 'LONGWORD';
+PCHAR			: 'PCHAR';
+STRING			: 'STRING';
+ANSISTRING		: 'ANSISTRING';
+WIDESTRING		: 'WIDESTRING';
+
 IMPLEMENTATION	: 'IMPLEMENTATION';
 
 ID	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -56,7 +85,7 @@ COMMENT
 	  ) -> channel(HIDDEN)
 	;
 
-STRING
+LITERAL
 	: '\'' ( ESC_SEQ | ~('\\'|'\'') )* '\''
 	;
 
@@ -105,6 +134,7 @@ usesClause
 interfaceDecl
 	: constSection
 	| varSection
+	| exportedHeading
 	;
 	
 constSection
@@ -113,7 +143,7 @@ constSection
 
 constDecl
 	: ident '=' constExpr
-	| ident ':' typeId '=' typedConstant
+//	| ident ':' typeId '=' typedConstant
 	;
 
 varSection
@@ -124,8 +154,69 @@ varDecl
 	: identList ':' type ((ABSOLUTE (ident | constExpr)) | '=' constExpr)?
 	;
 
+exportedHeading
+	: procedureHeading ';'
+	| functionHeading ';'
+	;
+
 implementationSection
 	: IMPLEMENTATION
+	;
+
+procedureHeading
+	: PROCEDURE ident formalParms?
+	;
+
+functionHeading
+	: FUNCTION ident formalParms? ':' simpleType
+	;
+
+formalParms
+	: '(' formalParm (';' formalParm)* ')'
+	;
+
+formalParm
+	: (VAR | CONST | OUT)? parameter
+	;
+
+parameter
+	: identList (':' ((ARRAY OF)? simpleType | STRING | FILE))?
+	| ident ':' simpleType '=' constExpr
+	;	
+
+simpleType
+	: ordinalType | realType
+	;
+
+ordinalType
+	: ordIdent
+//	| subrangeType 
+//	| enumeratedType 
+	;
+
+ordIdent
+	: SHORTINT
+	| SMALLINT
+	| INTEGER
+	| BYTE
+	| LONGINT
+	| INT64
+	| WORD
+	| BOOLEAN
+	| CHAR
+	| WIDECHAR
+	| LONGWORD
+	| PCHAR
+	;
+
+realType
+	: REAL48
+	| REAL
+	| SINGLE
+	| DOUBLE
+	| EXTENDED
+	| CURRENCY
+	| COMP
 	;
 
 typedConstant
@@ -137,8 +228,17 @@ constExpr
 	| number
 	;
 
+stringType
+	: STRING
+	| ANSISTRING
+	| WIDESTRING
+	| STRING '[' constExpr ']'
+	;
+
 type
 	: typeId
+	| simpleType
+	| stringType
 	;
 	
 typeId
@@ -158,7 +258,7 @@ identList
 	;
 
 string
-	: STRING
+	: LITERAL
 	;
 
 number

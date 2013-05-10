@@ -72,13 +72,19 @@ public class DelphiParserUnitTest {
 	@Test
 	public void testUnit006() throws Exception {
 		GoalContext context = parse(getClass().getResourceAsStream("Unit006.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit006) ; (interfaceSection INTERFACE (interfaceDecl (constSection CONST (constDecl (ident const0) = (constExpr (number 10))) ; (constDecl (ident const1) : (typeId (ident STRING)) = (typedConstant (constExpr (string 'value')))) ;))) .))")));
+		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit006) ; (interfaceSection INTERFACE (interfaceDecl (constSection CONST (constDecl (ident const0) = (constExpr (number 10))) ; (constDecl (ident const1) = (constExpr (string 'value'))) ;))) .))")));
 	}
 
 	@Test
 	public void testUnit007() throws Exception {
 		GoalContext context = parse(getClass().getResourceAsStream("Unit007.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit007) ; (interfaceSection INTERFACE (interfaceDecl (varSection VAR (varDecl (identList (ident var0) , (ident var1)) : (type (typeId (ident INTEGER))) = (constExpr (number 10))) ; (varDecl (identList (ident var2)) : (type (typeId (ident string)))) ; (varDecl (identList (ident var3)) : (type (typeId (ident Byte))) ABSOLUTE (ident var2)) ;))) .))")));
+		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit007) ; (interfaceSection INTERFACE (interfaceDecl (varSection VAR (varDecl (identList (ident var0) , (ident var1)) : (type (simpleType (ordinalType (ordIdent INTEGER)))) = (constExpr (number 10))) ; (varDecl (identList (ident var2)) : (type (typeId (ident string)))) ; (varDecl (identList (ident var3)) : (type (typeId (ident Byte))) ABSOLUTE (ident var2)) ;))) .))")));
+	}
+
+	@Test
+	public void testUnit008() throws Exception {
+		GoalContext context = parse(getClass().getResourceAsStream("Unit008.pas"));
+		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit008) ; (interfaceSection INTERFACE (interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : STRING)) ; (formalParm (parameter (identList (ident parm2)) : (simpleType (realType CURRENCY)))) ; (formalParm (parameter (identList (ident parm3) , (ident parm4) , (ident parm5)) : (simpleType (ordinalType (ordIdent INTEGER))))) )) : (simpleType (ordinalType (ordIdent BOOLEAN)))) ;)) (interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (simpleType (ordinalType (ordIdent INTEGER))))) ))) ;))) .))")));
 	}
 
 	private GoalContext parse(InputStream input) throws Exception {

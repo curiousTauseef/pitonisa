@@ -19,13 +19,14 @@
  * 
  * END COPYRIGHT NOTICE
  ******************************************************************************)
-{ interface section with consts }
+{ interface section with functions and procedures }
 
-UNIT Unit006;
+UNIT Unit008;
 
 INTERFACE
 
-CONST const0 = 10; const1 = 'value';
+  FUNCTION  function0  (parm0, parm1 : STRING; parm2 : CURRENCY; parm3, parm4, parm5 : INTEGER): BOOLEAN;
+  PROCEDURE procedure0 (parm0, parm1 : INTEGER);
 
 .
 
