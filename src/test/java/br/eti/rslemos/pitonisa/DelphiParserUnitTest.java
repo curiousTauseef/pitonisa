@@ -30,6 +30,12 @@ public class DelphiParserUnitTest {
 		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit002) ; (interfaceSection INTERFACE) .))")));
 	}
 
+	@Test
+	public void testUnit003() throws Exception {
+		GoalContext context = parse(getClass().getResourceAsStream("Unit003.pas"));
+		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit003) ; (implementationSection IMPLEMENTATION) .))")));
+	}
+
 	private GoalContext parse(InputStream input) throws Exception {
 		TokenSource lexer = new delphiLexer(new ANTLRInputStream(input));
 		delphiParser parser = new delphiParser(new CommonTokenStream(lexer));
