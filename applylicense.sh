@@ -32,10 +32,11 @@ NOTICEMARKERSREGEXP="\(BEGIN\|END\) COPYRIGHT NOTICE"
 
 HASHNOTICE="`mktemp -t noticeXXXXX`"
 JAVANOTICE="`mktemp -t noticeXXXXX`"
+PASCALNOTICE="`mktemp -t noticeXXXXX`"
 XMLNOTICE="`mktemp -t noticeXXXXX`"
 MDNOTICE="`mktemp -t noticeXXXXX`"
 
-trap "rm -fR $HASHNOTICE $XMLNOTICE $JAVANOTICE $MDNOTICE" exit
+trap "rm -fR $HASHNOTICE $XMLNOTICE $JAVANOTICE $PASCALNOTICE $MDNOTICE" exit
 
 (
 	copyrightNotice | sed -e 's/^/# /'
@@ -60,6 +61,12 @@ trap "rm -fR $HASHNOTICE $XMLNOTICE $JAVANOTICE $MDNOTICE" exit
 	copyrightNotice | sed -e 's/^/ * /'
 	head -c 80 < /dev/zero | tr '\0' '*' | sed -e 's/^*/ /' -e 's/*$/\/\n/'
 ) > "$JAVANOTICE"
+
+(
+	head -c 80 < /dev/zero | tr '\0' '*' | sed -e 's/^*/(/' -e 's/$/\n/'
+	copyrightNotice | sed -e 's/^/ * /'
+	head -c 80 < /dev/zero | tr '\0' '*' | sed -e 's/^*/ /' -e 's/*$/)\n/'
+) > "$PASCALNOTICE"
 
 findPreviousLicense() {
 	FILE="$1"
@@ -95,6 +102,14 @@ applyJava() {
 
 	stuffFirstLine "$FILE"
 	sed -i "$FILE" -e "1r $JAVANOTICE" -e "1d"
+}
+
+applyPascal() {
+	FILE="$1"
+	stripPreviousLicense "$FILE" "-1" "+1"
+
+	stuffFirstLine "$FILE"
+	sed -i "$FILE" -e "1r $PASCALNOTICE" -e "1d"
 }
 
 applyXML() {
@@ -139,8 +154,11 @@ while read FILE
 do
 	
 	case "`basename "$FILE"`" in
-		*.java | *.aj)
+		*.java | *.aj | *.g4)
 			applyJava "$FILE"
+			;;
+		*.pas)
+			applyPascal "$FILE"
 			;;
 		*.xml | *.xsd)
 			applyXML "$FILE"
