@@ -2,6 +2,7 @@ grammar delphi;
 
 UNIT			: 'UNIT';
 INTERFACE		: 'INTERFACE';
+USES			: 'USES';
 IMPLEMENTATION	: 'IMPLEMENTATION';
 
 ID	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -32,7 +33,11 @@ unit
 	;
 
 interfaceSection
-	: INTERFACE
+	: INTERFACE usesClause?
+	;
+
+usesClause
+	: USES identList ';'
 	;
 	
 implementationSection
@@ -41,4 +46,8 @@ implementationSection
 	
 ident
 	: ID
+	;
+
+identList
+	: ident (',' ident)*
 	;
