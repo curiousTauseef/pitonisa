@@ -1,6 +1,7 @@
 grammar delphi;
 
 UNIT			: 'UNIT';
+INTERFACE		: 'INTERFACE';
 
 
 ID	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -27,9 +28,13 @@ goal
 	;
 
 unit
-	: UNIT ident ';' '.'
+	: UNIT ident ';' interfaceSection? '.'
 	;
 
+interfaceSection
+	: INTERFACE
+	;
+	
 ident
 	: ID
 	;
