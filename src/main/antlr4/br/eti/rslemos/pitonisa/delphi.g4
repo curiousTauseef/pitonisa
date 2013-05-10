@@ -4,6 +4,8 @@ UNIT			: 'UNIT';
 INTERFACE		: 'INTERFACE';
 USES			: 'USES';
 CONST			: 'CONST';
+VAR				: 'VAR';
+ABSOLUTE		: 'ABSOLUTE';
 IMPLEMENTATION	: 'IMPLEMENTATION';
 
 ID	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -81,6 +83,7 @@ usesClause
 
 interfaceDecl
 	: constSection
+	| varSection
 	;
 	
 constSection
@@ -90,6 +93,14 @@ constSection
 constDecl
 	: ident '=' constExpr
 	| ident ':' typeId '=' typedConstant
+	;
+
+varSection
+	: VAR (varDecl ';')+
+	;
+
+varDecl
+	: identList ':' type ((ABSOLUTE (ident | constExpr)) | '=' constExpr)?
 	;
 
 implementationSection
@@ -105,6 +116,10 @@ constExpr
 	| number
 	;
 
+type
+	: typeId
+	;
+	
 typeId
 	: (unitId '.')? ident
 	;
