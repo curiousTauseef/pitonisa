@@ -134,6 +134,7 @@ usesClause
 interfaceDecl
 	: constSection
 	| varSection
+//	| typeSection
 	| exportedHeading
 	;
 	

@@ -25,71 +25,167 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
-
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.TokenSource;
 import org.junit.Test;
 
-import br.eti.rslemos.pitonisa.delphiParser.GoalContext;
-
-public class DelphiParserUnitTest {
-	private static final List<String> ruleNames = Arrays.asList(delphiParser.ruleNames);
-	
+public class DelphiParserUnitTest extends AbstractDelphiParserUnitTest {
 	@Test
 	public void testUnit001() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit001.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit001) ; .))")));
+		parse(getClass().getResourceAsStream("Unit001.pas"));
+		
+		enterGoal();
+		 enterUnit();
+		  enterIdent();
+		  assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident Unit001)")));
+		 exitUnit();
+		exitGoal();
 	}
 
 	@Test
 	public void testUnit002() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit002.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit002) ; (interfaceSection INTERFACE) .))")));
+		parse(getClass().getResourceAsStream("Unit002.pas"));
+		
+		enterGoal();
+		 enterUnit();
+		  enterIdent();
+		  exitIdent();
+		  enterInterfaceSection();
+		  exitInterfaceSection();
+		 exitUnit();
+		exitGoal();
 	}
 
 	@Test
 	public void testUnit003() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit003.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit003) ; (implementationSection IMPLEMENTATION) .))")));
+		parse(getClass().getResourceAsStream("Unit003.pas"));
+		
+		enterGoal();
+		 enterUnit();
+		  enterIdent();
+		  exitIdent();
+		  enterImplementationSection();
+		  exitImplementationSection();
+		 exitUnit();
+		exitGoal();
 	}
 
 	@Test
 	public void testUnit004() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit004.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit004) ; (interfaceSection INTERFACE (usesClause USES (identList (ident uses0)) ;)) .))")));
+		parse(getClass().getResourceAsStream("Unit004.pas"));
+		
+		enterInterfaceSection();
+			enterUsesClause();
+				enterIdentList();
+					enterIdent();
+					assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident uses0)")));
+				exitIdentList();
+			exitUsesClause();
+		exitInterfaceSection();
 	}
 
 	@Test
 	public void testUnit005() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit005.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit005) ; (interfaceSection INTERFACE (usesClause USES (identList (ident uses0) , (ident uses1)) ;)) .))")));
+		parse(getClass().getResourceAsStream("Unit005.pas"));
+		
+		enterUsesClause();
+			enterIdentList();
+				enterIdent();
+				assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident uses0)")));
+				enterIdent();
+				assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident uses1)")));
+			exitIdentList();
+		exitUsesClause();
 	}
 
 	@Test
 	public void testUnit006() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit006.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit006) ; (interfaceSection INTERFACE (interfaceDecl (constSection CONST (constDecl (ident const0) = (constExpr (number 10))) ; (constDecl (ident const1) = (constExpr (string 'value'))) ;))) .))")));
+		parse(getClass().getResourceAsStream("Unit006.pas"));
+		
+		// (interfaceSection INTERFACE (interfaceDecl (constSection CONST (constDecl (ident const0) = (constExpr (number 10))) ; (constDecl (ident const1) = (constExpr (string 'value'))) ;)))
+		enterInterfaceSection();
+			enterInterfaceDecl();
+				enterConstSection();
+					enterConstDecl();
+						enterIdent();
+						assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident const0)")));
+						enterConstExpr();
+							enterNumber();
+							assertThat(exitNumber().toStringTree(ruleNames), is(equalTo("(number 10)")));
+						exitConstExpr();
+					exitConstDecl();
+					enterConstDecl();
+						enterIdent();
+						assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident const1)")));
+						enterConstExpr();
+							enterString();
+							assertThat(exitString().toStringTree(ruleNames), is(equalTo("(string 'value')")));
+						exitConstExpr();
+					exitConstDecl();
+				exitConstSection();
+			exitInterfaceDecl();
+		exitInterfaceSection();
 	}
 
 	@Test
 	public void testUnit007() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit007.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit007) ; (interfaceSection INTERFACE (interfaceDecl (varSection VAR (varDecl (identList (ident var0) , (ident var1)) : (type (simpleType (ordinalType (ordIdent INTEGER)))) = (constExpr (number 10))) ; (varDecl (identList (ident var2)) : (type (typeId (ident string)))) ; (varDecl (identList (ident var3)) : (type (typeId (ident Byte))) ABSOLUTE (ident var2)) ;))) .))")));
+		parse(getClass().getResourceAsStream("Unit007.pas"));
+		
+		// (interfaceDecl (varSection VAR (varDecl (identList (ident var0) , (ident var1)) : (type (simpleType (ordinalType (ordIdent INTEGER)))) = (constExpr (number 10))) ; (varDecl (identList (ident var2)) : (type (typeId (ident string)))) ; (varDecl (identList (ident var3)) : (type (typeId (ident Byte))) ABSOLUTE (ident var2)) ;)))
+		enterInterfaceSection();
+			enterInterfaceDecl();
+				enterVarSection();
+					enterVarDecl();
+						enterIdentList();
+						assertThat(exitIdentList().toStringTree(ruleNames), is(equalTo("(identList (ident var0) , (ident var1))")));
+						enterType();
+							enterSimpleType();
+								enterOrdinalType();
+									enterOrdIdent();
+									assertThat(exitOrdIdent().toStringTree(ruleNames), is(equalTo("(ordIdent INTEGER)")));
+								exitOrdinalType();
+							exitSimpleType();
+						exitType();
+						enterConstExpr();
+							enterNumber();
+							assertThat(exitNumber().toStringTree(ruleNames), is(equalTo("(number 10)")));
+						exitConstExpr();
+					exitVarDecl();
+					enterVarDecl();
+						enterIdentList();
+						assertThat(exitIdentList().toStringTree(ruleNames), is(equalTo("(identList (ident var2))")));
+						enterType();
+							enterTypeId();
+							// BAD
+							assertThat(exitTypeId().toStringTree(ruleNames), is(equalTo("(typeId (ident string))")));
+						exitType();
+					exitVarDecl();
+					enterVarDecl();
+						enterIdentList();
+						assertThat(exitIdentList().toStringTree(ruleNames), is(equalTo("(identList (ident var3))")));
+						enterType();
+							enterTypeId();
+							// BAD?
+							assertThat(exitTypeId().toStringTree(ruleNames), is(equalTo("(typeId (ident Byte))")));
+						exitType();
+						enterIdent();
+						assertThat(exitIdent().toStringTree(ruleNames), is(equalTo("(ident var2)")));
+					exitVarDecl();
+				exitVarSection();
+			exitInterfaceDecl();
+		exitInterfaceSection();
+		
 	}
 
 	@Test
 	public void testUnit008() throws Exception {
-		GoalContext context = parse(getClass().getResourceAsStream("Unit008.pas"));
-		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit008) ; (interfaceSection INTERFACE (interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : STRING)) ; (formalParm (parameter (identList (ident parm2)) : (simpleType (realType CURRENCY)))) ; (formalParm (parameter (identList (ident parm3) , (ident parm4) , (ident parm5)) : (simpleType (ordinalType (ordIdent INTEGER))))) )) : (simpleType (ordinalType (ordIdent BOOLEAN)))) ;)) (interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (simpleType (ordinalType (ordIdent INTEGER))))) ))) ;))) .))")));
+		parse(getClass().getResourceAsStream("Unit008.pas"));
+		// (interfaceSection INTERFACE (interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : STRING)) ; (formalParm (parameter (identList (ident parm2)) : (simpleType (realType CURRENCY)))) ; (formalParm (parameter (identList (ident parm3) , (ident parm4) , (ident parm5)) : (simpleType (ordinalType (ordIdent INTEGER))))) )) : (simpleType (ordinalType (ordIdent BOOLEAN)))) ;)) (interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (simpleType (ordinalType (ordIdent INTEGER))))) ))) ;)))
+		enterInterfaceSection();
+			enterInterfaceDecl();
+				enterExportedHeading();
+				exitExportedHeading();
+			exitInterfaceDecl();
+		exitInterfaceSection();
+		
 	}
 
-	private GoalContext parse(InputStream input) throws Exception {
-		TokenSource lexer = new delphiLexer(new ANTLRInputStream(input));
-		delphiParser parser = new delphiParser(new CommonTokenStream(lexer));
-		return parser.goal();
-	}
 }
