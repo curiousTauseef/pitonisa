@@ -14,12 +14,20 @@ WS
 	  ) -> channel(HIDDEN)
 	;
 
+COMMENT
+	: ( '//' ~('\n'|'\r')* '\r'? '\n' 
+	  | '(*' .*? '*)' 
+	  | '{' .*? '}' 
+	  ) -> channel(HIDDEN)
+	;
+
+
 goal
 	: unit
 	;
 
 unit
-	: UNIT ident ';'
+	: UNIT ident ';' '.'
 	;
 
 ident

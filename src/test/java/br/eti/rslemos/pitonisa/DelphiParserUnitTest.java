@@ -1,20 +1,32 @@
 package br.eti.rslemos.pitonisa;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenSource;
-import org.antlr.v4.runtime.TokenStream;
 import org.junit.Test;
 
+import br.eti.rslemos.pitonisa.delphiParser.GoalContext;
+
 public class DelphiParserUnitTest {
+	private static final List<String> ruleNames = Arrays.asList(delphiParser.ruleNames);
 	
 	@Test
-	public void testBootstrapParser() throws Exception {
-		CharStream text = new ANTLRInputStream("UNIT x;");
-		TokenSource lexer = new delphiLexer(text);
-		TokenStream input = new CommonTokenStream(lexer);
-		delphiParser parser = new delphiParser(input);
-		parser.goal();
+	public void testUnit001() throws Exception {
+		GoalContext context = parse(getClass().getResourceAsStream("Unit001.pas"));
+		assertThat(context.toStringTree(ruleNames), is(equalTo("(goal (unit UNIT (ident Unit001) ; .))")));
+	}
+
+	private GoalContext parse(InputStream input) throws Exception {
+		TokenSource lexer = new delphiLexer(new ANTLRInputStream(input));
+		delphiParser parser = new delphiParser(new CommonTokenStream(lexer));
+		return parser.goal();
 	}
 }
