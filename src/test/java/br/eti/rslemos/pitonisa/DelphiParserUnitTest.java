@@ -84,7 +84,8 @@ public class DelphiParserUnitTest {
 	@Test
 	public void testUnit008() throws Exception {
 		ParserRuleContext context = parse(getClass().getResourceAsStream("Unit008.pas"));
-		assertThat(xpath(context, "/goal/unit/interfaceSection").toStringTree(ruleNames), is(equalTo("(interfaceSection INTERFACE (interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : STRING)) ; (formalParm (parameter (identList (ident parm2)) : (simpleType (realType CURRENCY)))) ; (formalParm (parameter (identList (ident parm3) , (ident parm4) , (ident parm5)) : (simpleType (ordinalType (ordIdent INTEGER))))) )) : (simpleType (ordinalType (ordIdent BOOLEAN)))) ;)) (interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (simpleType (ordinalType (ordIdent INTEGER))))) ))) ;)))")));
+		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[0]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : STRING)) ; (formalParm (parameter (identList (ident parm2)) : (simpleType (realType CURRENCY)))) ; (formalParm (parameter (identList (ident parm3) , (ident parm4) , (ident parm5)) : (simpleType (ordinalType (ordIdent INTEGER))))) )) : (simpleType (ordinalType (ordIdent BOOLEAN)))) ;))")));
+		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[1]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (simpleType (ordinalType (ordIdent INTEGER))))) ))) ;))")));
 	}
 
 	private ParserRuleContext xpath(ParserRuleContext context, String path) {
@@ -97,11 +98,21 @@ public class DelphiParserUnitTest {
 		
 	outer:
 		for (String part : parts) {
+			int index = 0;
+			
+			if (part.matches("^.*\\[[0-9]+\\]$")) {
+				String indexPart = part.substring(part.lastIndexOf('[') + 1, part.length() - 1);
+				index = Integer.parseInt(indexPart);
+				part = part.substring(0, part.lastIndexOf('['));
+			}
+				
 			for (int i = 0; i < context.getChildCount()	; i++) {
 				ParserRuleContext candidate = context.getChild(ParserRuleContext.class, i);
 				if (part.equals(ruleNames.get(candidate.getRuleIndex()))) {
-					context = candidate;
-					continue outer;
+					if (index-- == 0) { 
+						context = candidate;
+						continue outer;
+					}
 				}
 			}
 			
