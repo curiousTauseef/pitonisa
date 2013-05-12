@@ -67,7 +67,12 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 				"\n" +
 				"IMPLEMENTATION\n" +
 				"USES\n" +
-				"  uses0, uses1, uses2;" +
+				"  uses0, uses1, uses2;\n" +
+				"\n" +
+				"CONST\n"+
+				"  iconst0 : STRING = 'value';\n" +
+				"  iconst1 : STRING = 'value';\n" +
+				"  iconst2 : INTEGER = 10;\n" +
 				".\n" +
 				"\n" 
 			);
@@ -138,5 +143,10 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 		assertThat(xpath(context, "/goal/unit/implementationSection/usesClause").toStringTree(ruleNames), is(equalTo("(usesClause USES (identList (ident uses0) , (ident uses1) , (ident uses2)) ;)")));
 	}
 
+	@Test
+	public void testImplementationConstSection() throws Exception {
+		assertThat(xpath(context, "/goal/unit/implementationSection/declSection[0]/constSection").toStringTree(ruleNames), is(equalTo("(constSection CONST (constDecl (ident iconst0) = (constExpr (string 'value')) ; (constDecl (ident iconst1) = (constExpr (string 'value'))) ; (constDecl (ident iconst2) = (constExpr (number 10))) ;)")));
+	}
+	
 }
 

@@ -128,7 +128,7 @@ interfaceSection
 	;
 
 implementationSection
-	: IMPLEMENTATION usesClause?
+	: IMPLEMENTATION usesClause? declSection*
 	;
 
 usesClause
@@ -140,6 +140,10 @@ interfaceDecl
 	| varSection
 	| exportedHeading
 	;
+
+declSection
+	: constSection
+	;
 	
 constSection
 	: CONST (constDecl ';')+
@@ -147,7 +151,7 @@ constSection
 
 constDecl
 	: ident '=' constExpr
-//	| ident ':' typeId '=' typedConstant
+	| ident ':' type '=' typedConstant
 	;
 
 varSection
@@ -239,7 +243,7 @@ constExpr
 	: string
 	| number
 	;
-
+	
 stringType
 	: STRING
 	| ANSISTRING
