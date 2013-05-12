@@ -172,7 +172,7 @@ functionHeading
 	;
 
 formalParms
-	: '(' formalParm (';' formalParm)* ')'
+	: '(' (formalParm (';' formalParm)*)? ')'
 	;
 
 formalParm
