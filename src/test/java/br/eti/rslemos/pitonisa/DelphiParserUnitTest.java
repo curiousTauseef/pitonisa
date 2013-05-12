@@ -24,8 +24,10 @@ package br.eti.rslemos.pitonisa;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,10 +35,37 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenSource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DelphiParserUnitTest {
 	private static final List<String> ruleNames = Arrays.asList(delphiParser.ruleNames);
+	private boolean stderrUsed = false;
+	
+	@Before
+	public void setup() {
+		System.setErr(new PrintStream(System.err) {
+
+			@Override
+			public void write(int b) {
+				stderrUsed = true;
+				super.write(b);
+			}
+
+			@Override
+			public void write(byte[] buf, int off, int len) {
+				stderrUsed = true;
+				super.write(buf, off, len);
+			}
+
+		});
+	}
+	
+	@After
+	public void teardown() {
+		if (stderrUsed) fail("message sent to stderr");
+	}
 	
 	@Test
 	public void testUnit001() throws Exception {
