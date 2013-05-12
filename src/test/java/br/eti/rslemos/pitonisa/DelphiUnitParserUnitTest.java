@@ -150,7 +150,7 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 
 	@Test
 	public void testImplementationConstSection() throws Exception {
-		assertThat(implementationSection().declSection(0).constSection().toStringTree(ruleNames), is(equalTo("(constSection CONST (constDecl (ident iconst0) = (constExpr (string 'value')) ; (constDecl (ident iconst1) = (constExpr (string 'value'))) ; (constDecl (ident iconst2) = (constExpr (number 10))) ;)")));
+		assertThat(implementationSection().declSection(0).constSection().toStringTree(ruleNames), is(equalTo("(constSection CONST (constDecl (ident iconst0) : (type (stringType STRING)) = (typedConstant (constExpr (string 'value')))) ; (constDecl (ident iconst1) : (type (stringType STRING)) = (typedConstant (constExpr (string 'value')))) ; (constDecl (ident iconst2) : (type (simpleType (ordinalType (ordIdent INTEGER)))) = (typedConstant (constExpr (number 10)))) ;)")));
 	}
 
 	private GoalContext goal() {
