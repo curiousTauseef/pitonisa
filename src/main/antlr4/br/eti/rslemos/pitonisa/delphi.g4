@@ -186,13 +186,14 @@ formalParm
 	;
 
 parameter
-	: identList (':' ((ARRAY OF)? parameterType | STRING | FILE))?
+	: identList (':' ((ARRAY OF)? parameterType | FILE))?
 	| ident ':' parameterType '=' constExpr
 	;	
 
 parameterType
 	: simpleType
 	| qualId
+	| STRING
 	;
 
 simpleType

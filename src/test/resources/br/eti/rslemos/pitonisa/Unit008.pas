@@ -30,5 +30,6 @@ INTERFACE
   FUNCTION  function2 (dt:TDatetime=0): TDate;
   PROCEDURE procedure0 (parm0, parm1 : INTEGER);
   PROCEDURE procedure1();
+  PROCEDURE procedure2 (parm0: ARRAY OF STRING);
 .
 
