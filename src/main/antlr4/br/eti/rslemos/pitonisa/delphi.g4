@@ -168,9 +168,15 @@ procedureHeading
 	;
 
 functionHeading
-	: FUNCTION ident formalParms? ':' (simpleType | STRING)
+	: FUNCTION ident formalParms? ':' returnType
 	;
 
+returnType
+	: simpleType
+	| qualId 
+	| STRING
+	;
+	
 formalParms
 	: '(' (formalParm (';' formalParm)*)? ')'
 	;
@@ -181,7 +187,7 @@ formalParm
 
 parameter
 	: identList (':' ((ARRAY OF)? parameterType | STRING | FILE))?
-	| ident ':' simpleType '=' constExpr
+	| ident ':' parameterType '=' constExpr
 	;	
 
 parameterType

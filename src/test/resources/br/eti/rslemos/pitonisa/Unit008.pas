@@ -27,6 +27,7 @@ INTERFACE
 
   FUNCTION  function0  (parm0, parm1 : STRING; parm2 : CURRENCY; parm3, parm4, parm5 : INTEGER): BOOLEAN;
   FUNCTION  function1 () : STRING;
+  FUNCTION  function2 (dt:TDatetime=0): TDate;
   PROCEDURE procedure0 (parm0, parm1 : INTEGER);
   PROCEDURE procedure1();
 .
