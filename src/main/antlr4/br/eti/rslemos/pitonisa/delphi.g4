@@ -180,9 +180,14 @@ formalParm
 	;
 
 parameter
-	: identList (':' ((ARRAY OF)? simpleType | STRING | FILE))?
+	: identList (':' ((ARRAY OF)? parameterType | STRING | FILE))?
 	| ident ':' simpleType '=' constExpr
 	;	
+
+parameterType
+	: simpleType
+	| qualId
+	;
 
 simpleType
 	: ordinalType | realType
@@ -243,6 +248,10 @@ type
 	
 typeId
 	: (unitId '.')? ident
+	;
+
+qualId
+	: ident ('.' ident)*
 	;
 
 unitId
