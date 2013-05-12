@@ -127,6 +127,10 @@ interfaceSection
 	: INTERFACE usesClause? interfaceDecl*
 	;
 
+implementationSection
+	: IMPLEMENTATION usesClause?
+	;
+
 usesClause
 	: USES identList ';'
 	;
@@ -157,10 +161,6 @@ varDecl
 exportedHeading
 	: procedureHeading ';'
 	| functionHeading ';'
-	;
-
-implementationSection
-	: IMPLEMENTATION
 	;
 
 procedureHeading

@@ -66,7 +66,8 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 				"\n" +
 				"\n" +
 				"IMPLEMENTATION\n" +
-				"" +
+				"USES\n" +
+				"  uses0, uses1, uses2;" +
 				".\n" +
 				"\n" 
 			);
@@ -88,7 +89,7 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 	}
 
 	@Test
-	public void testUsesClause() throws Exception {
+	public void testInterfaceUsesClause() throws Exception {
 		assertThat(xpath(context, "/goal/unit/interfaceSection/usesClause").toStringTree(ruleNames), is(equalTo("(usesClause USES (identList (ident uses0) , (ident uses1)) ;)")));
 	}
 
@@ -131,5 +132,11 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 	public void testInterfactExportedProcedureWithParameterArrayOfString() throws Exception {
 		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[7]/exportedHeading/procedureHeading").toStringTree(ruleNames), is(equalTo("(procedureHeading PROCEDURE (ident procedure2) (formalParms ( (formalParm (parameter (identList (ident parm0)) : ARRAY OF (parameterType STRING))) )))")));
 	}
+	
+	@Test
+	public void testImplementationUsesClause() throws Exception {
+		assertThat(xpath(context, "/goal/unit/implementationSection/usesClause").toStringTree(ruleNames), is(equalTo("(usesClause USES (identList (ident uses0) , (ident uses1) , (ident uses2)) ;)")));
+	}
+
 }
 
