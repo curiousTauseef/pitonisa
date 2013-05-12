@@ -84,8 +84,9 @@ public class DelphiParserUnitTest {
 	public void testUnit008() throws Exception {
 		ParserRuleContext context = parse(getClass().getResourceAsStream("Unit008.pas"));
 		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[0]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : STRING)) ; (formalParm (parameter (identList (ident parm2)) : (parameterType (simpleType (realType CURRENCY))))) ; (formalParm (parameter (identList (ident parm3) , (ident parm4) , (ident parm5)) : (parameterType (simpleType (ordinalType (ordIdent INTEGER)))))) )) : (simpleType (ordinalType (ordIdent BOOLEAN)))) ;))")));
-		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[1]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (parameterType (simpleType (ordinalType (ordIdent INTEGER)))))) ))) ;))")));
-		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[2]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure1) (formalParms ( ))) ;))")));
+		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[1]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (functionHeading FUNCTION (ident function1) (formalParms ( )) : STRING) ;))")));
+		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[2]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (parameterType (simpleType (ordinalType (ordIdent INTEGER)))))) ))) ;))")));
+		assertThat(xpath(context, "/goal/unit/interfaceSection/interfaceDecl[3]").toStringTree(ruleNames), is(equalTo("(interfaceDecl (exportedHeading (procedureHeading PROCEDURE (ident procedure1) (formalParms ( ))) ;))")));
 	}
 
 	private ParserRuleContext xpath(ParserRuleContext context, String path) {

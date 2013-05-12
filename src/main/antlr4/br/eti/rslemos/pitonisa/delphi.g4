@@ -168,7 +168,7 @@ procedureHeading
 	;
 
 functionHeading
-	: FUNCTION ident formalParms? ':' simpleType
+	: FUNCTION ident formalParms? ':' (simpleType | STRING)
 	;
 
 formalParms

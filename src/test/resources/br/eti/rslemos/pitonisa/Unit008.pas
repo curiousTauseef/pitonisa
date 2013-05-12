@@ -26,6 +26,7 @@ UNIT Unit008;
 INTERFACE
 
   FUNCTION  function0  (parm0, parm1 : STRING; parm2 : CURRENCY; parm3, parm4, parm5 : INTEGER): BOOLEAN;
+  FUNCTION  function1 () : STRING;
   PROCEDURE procedure0 (parm0, parm1 : INTEGER);
   PROCEDURE procedure1();
 .
