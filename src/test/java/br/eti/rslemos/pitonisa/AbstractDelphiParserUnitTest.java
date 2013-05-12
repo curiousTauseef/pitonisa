@@ -30,10 +30,11 @@ import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenSource;
 import org.junit.After;
 import org.junit.Before;
+
+import br.eti.rslemos.pitonisa.delphiParser.GoalContext;
 
 public abstract class AbstractDelphiParserUnitTest {
 
@@ -64,11 +65,7 @@ public abstract class AbstractDelphiParserUnitTest {
 		if (stderrUsed) fail("message sent to stderr");
 	}
 
-	protected ParserRuleContext xpath(ParserRuleContext context, String path) {
-		return ANTLRXPath.xpath(context, path, ruleNames);
-	}
-
-	protected ParserRuleContext parse(String text) throws Exception {
+	protected GoalContext parse(String text) throws Exception {
 		TokenSource lexer = new delphiLexer(new ANTLRInputStream(new StringReader(text)));
 		delphiParser parser = new delphiParser(new CommonTokenStream(lexer));
 		return parser.goal();
