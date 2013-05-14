@@ -144,6 +144,7 @@ interfaceDecl
 declSection
 	: constSection
 	| varSection
+	| procedureDeclSection
 	;
 	
 constSection
@@ -163,6 +164,14 @@ varDecl
 	: identList ':' (ARRAY('[' subrangeType ']')? OF)? type ((ABSOLUTE (ident | constExpr)) | '=' constExpr)?
 	;
 
+procedureDeclSection
+	: procedureDecl
+	;
+
+procedureDecl
+	: procedureHeading ';'
+	;
+	
 exportedHeading
 	: procedureHeading ';'
 	| functionHeading ';'

@@ -83,6 +83,8 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 				"  var0 : TIniFile;\n" +
 				"  var1 : ARRAY OF STRING;\n" +
 				"  var2 : ARRAY[1..5] OF STRING;\n" +
+				"\n" +
+				"  PROCEDURE procedure0 (parm0, parm1 : INTEGER);\n" +
 				".\n" +
 				"\n" 
 			);
@@ -173,6 +175,11 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 		assertThat(implementationSection().declSection(1).varSection().varDecl(2).toStringTree(ruleNames), is(equalTo("(varDecl (identList (ident var2)) : ARRAY [ (subrangeType 1 .. 5) ] OF (type (stringType STRING)))")));
 	}
 
+	@Test
+	public void testImplementationProcedureHeading() throws Exception {
+		assertThat(implementationSection().declSection(2).procedureDeclSection().procedureDecl().procedureHeading().toStringTree(ruleNames), is(equalTo("(procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (parameterType (simpleType (ordinalType (ordIdent INTEGER)))))) )))")));
+	}
+	
 	private GoalContext goal() {
 		return goal;
 	}
