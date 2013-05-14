@@ -80,7 +80,9 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 				"  iconst2 : INTEGER = 10;\n" +
 				"\n" +
 				"VAR\n"+
-				"  var0 : TIniFile;" +
+				"  var0 : TIniFile;\n" +
+				"  var1 : ARRAY OF STRING;\n" +
+				"  var2 : ARRAY[1..5] OF STRING;\n" +
 				".\n" +
 				"\n" 
 			);
@@ -158,7 +160,17 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 
 	@Test
 	public void testImplementationVarSection() throws Exception {
-		assertThat(implementationSection().declSection(1).varSection().toStringTree(ruleNames), is(equalTo("(varSection VAR (varDecl (identList (ident var0)) : (type (typeId (ident TIniFile)))) ;)")));
+		assertThat(implementationSection().declSection(1).varSection().varDecl(0).toStringTree(ruleNames), is(equalTo("(varDecl (identList (ident var0)) : (type (typeId (ident TIniFile))))")));
+	}
+
+	@Test
+	public void testImplementationVarSectionDynamicArrayOf() throws Exception {
+		assertThat(implementationSection().declSection(1).varSection().varDecl(1).toStringTree(ruleNames), is(equalTo("(varDecl (identList (ident var1)) : ARRAY OF (type (stringType STRING)))")));
+	}
+
+	@Test
+	public void testImplementationVarSectionStaticArrayOf() throws Exception {
+		assertThat(implementationSection().declSection(1).varSection().varDecl(2).toStringTree(ruleNames), is(equalTo("(varDecl (identList (ident var2)) : ARRAY [ (subrangeType 1 .. 5) ] OF (type (stringType STRING)))")));
 	}
 
 	private GoalContext goal() {

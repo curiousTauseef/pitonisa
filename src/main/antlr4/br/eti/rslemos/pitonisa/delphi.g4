@@ -65,7 +65,7 @@ INT	: '0'..'9'+
 	;
 
 FLOAT
-	: ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
+	: ('0'..'9')+ '.' ('0'..'9')+ EXPONENT?
 	| '.' ('0'..'9')+ EXPONENT?
 	| ('0'..'9')+ EXPONENT
 	;
@@ -160,7 +160,7 @@ varSection
 	;
 
 varDecl
-	: identList ':' type ((ABSOLUTE (ident | constExpr)) | '=' constExpr)?
+	: identList ':' (ARRAY('[' subrangeType ']')? OF)? type ((ABSOLUTE (ident | constExpr)) | '=' constExpr)?
 	;
 
 exportedHeading
@@ -238,6 +238,10 @@ realType
 
 typedConstant
 	: constExpr	
+	;
+
+subrangeType
+	: INT '..' INT
 	;
 
 constExpr
