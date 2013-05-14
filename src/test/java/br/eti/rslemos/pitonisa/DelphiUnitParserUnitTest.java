@@ -84,8 +84,15 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 				"  var1 : ARRAY OF STRING;\n" +
 				"  var2 : ARRAY[1..5] OF STRING;\n" +
 				"\n" +
-				"  PROCEDURE procedure0 (parm0, parm1 : INTEGER);\n" +
-				"  FUNCTION function1 () : STRING;\n" +
+				"PROCEDURE procedure0 (parm0, parm1 : INTEGER);\n" +
+				"BEGIN\n" +
+				"INHERITED;\n" +
+				"END;\n" +
+				"\n" +
+				"FUNCTION function1 () : STRING;" +
+				"BEGIN\n" +
+				"INHERITED;\n" +
+				"END;\n" +
 				".\n" +
 				"\n" 
 			);

@@ -55,8 +55,10 @@ PCHAR			: 'PCHAR';
 STRING			: 'STRING';
 ANSISTRING		: 'ANSISTRING';
 WIDESTRING		: 'WIDESTRING';
-
 IMPLEMENTATION	: 'IMPLEMENTATION';
+BEGIN			: 'BEGIN';
+END				: 'END';
+INHERITED		: 'INHERITED';
 
 ID	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
@@ -170,11 +172,11 @@ procedureDeclSection
 	;
 
 procedureDecl
-	: procedureHeading ';'
+	: procedureHeading ';' block ';'
 	;
 	
 functionDecl
-	: functionHeading ';'
+	: functionHeading ';' block ';'
 	;
 	
 exportedHeading
@@ -213,6 +215,26 @@ parameterType
 	: simpleType
 	| qualId
 	| STRING
+	;
+
+block
+	: compoundStmt
+	;
+
+compoundStmt
+	: BEGIN stmtList END
+	;
+
+stmtList
+	: (statement ';')+
+	;
+
+statement
+	: simpleStatement
+	;
+
+simpleStatement
+	: INHERITED
 	;
 
 simpleType
