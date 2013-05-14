@@ -143,6 +143,7 @@ interfaceDecl
 
 declSection
 	: constSection
+	| varSection
 	;
 	
 constSection
