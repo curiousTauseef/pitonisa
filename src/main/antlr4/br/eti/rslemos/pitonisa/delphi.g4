@@ -166,10 +166,15 @@ varDecl
 
 procedureDeclSection
 	: procedureDecl
+	| functionDecl
 	;
 
 procedureDecl
 	: procedureHeading ';'
+	;
+	
+functionDecl
+	: functionHeading ';'
 	;
 	
 exportedHeading

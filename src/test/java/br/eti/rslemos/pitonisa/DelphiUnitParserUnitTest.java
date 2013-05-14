@@ -85,6 +85,7 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 				"  var2 : ARRAY[1..5] OF STRING;\n" +
 				"\n" +
 				"  PROCEDURE procedure0 (parm0, parm1 : INTEGER);\n" +
+				"  FUNCTION function1 () : STRING;\n" +
 				".\n" +
 				"\n" 
 			);
@@ -178,6 +179,11 @@ public class DelphiUnitParserUnitTest extends AbstractDelphiParserUnitTest {
 	@Test
 	public void testImplementationProcedureHeading() throws Exception {
 		assertThat(implementationSection().declSection(2).procedureDeclSection().procedureDecl().procedureHeading().toStringTree(ruleNames), is(equalTo("(procedureHeading PROCEDURE (ident procedure0) (formalParms ( (formalParm (parameter (identList (ident parm0) , (ident parm1)) : (parameterType (simpleType (ordinalType (ordIdent INTEGER)))))) )))")));
+	}
+	
+	@Test
+	public void testImplementationFunctionHeading() throws Exception {
+		assertThat(implementationSection().declSection(3).procedureDeclSection().functionDecl().functionHeading().toStringTree(ruleNames), is(equalTo("(functionHeading FUNCTION (ident function1) (formalParms ( )) : (returnType STRING))")));
 	}
 	
 	private GoalContext goal() {
